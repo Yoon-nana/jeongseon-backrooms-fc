@@ -39,6 +39,7 @@ type WorldState = {
   player: Point & { facingX: number; facingY: number };
   ball: Point & { vx: number; vy: number };
   shadow: Point & { visible: boolean };
+  shadowDefeated: boolean;
   targetIndex: number;
   roomSeconds: number;
   lastFrame: number;
@@ -190,6 +191,7 @@ function makeWorld(room: Room): WorldState {
     player: { ...room.start, facingX: 1, facingY: 0 },
     ball: { ...room.ballStart, vx: 0, vy: 0 },
     shadow: { x: 910, y: 68, visible: false },
+    shadowDefeated: false,
     targetIndex: 0,
     roomSeconds: 0,
     lastFrame: nowMs(),
@@ -375,7 +377,7 @@ export default function Game() {
     world.shake = 2;
     playTone(410, 0.16, "sine", 0.035);
     showToast("공을 되찾았습니다. 그림자가 가까워집니다!", 1600);
-    world.shadow.visible = true;
+    if (!world.shadowDefeated) world.shadow.visible = true;
   }, [playTone, showToast]);
 
   const togglePause = useCallback(() => {
@@ -556,7 +558,7 @@ export default function Game() {
       drawSprite(ctx, npcImage, currentRoom.npc.x, currentRoom.npc.y, 188, 0.34 + Math.sin(time * 0.003) * 0.08);
       ctx.restore();
 
-      if (world.shadow.visible) {
+      if (world.shadow.visible && !world.shadowDefeated) {
         ctx.save();
         const pulse = 1 + Math.sin(time * 0.009) * 0.08;
         ctx.translate(world.shadow.x, world.shadow.y); ctx.scale(pulse, pulse);
@@ -629,6 +631,22 @@ export default function Game() {
         if (Math.abs(world.ball.vx) < 1) world.ball.vx = 0;
         if (Math.abs(world.ball.vy) < 1) world.ball.vy = 0;
 
+        const ballSpeed = Math.hypot(world.ball.vx, world.ball.vy);
+        if (world.shadow.visible && !world.shadowDefeated && distance(world.shadow, world.ball) < 37 && ballSpeed > 35) {
+          const hitX = world.shadow.x;
+          const hitY = world.shadow.y;
+          world.shadow.visible = false;
+          world.shadowDefeated = true;
+          world.ball.vx *= 0.48;
+          world.ball.vy *= 0.48;
+          world.shake = 10;
+          spawnBurst(hitX, hitY, "#ff4557");
+          spawnBurst(hitX, hitY, currentRoom.accent);
+          playTone(960, 0.13, "square", 0.06);
+          setTimeout(() => playTone(520, 0.28, "sawtooth", 0.045), 100);
+          showToast("레드카드! 그림자 심판이 이 방에서 퇴장했습니다.", 2800);
+        }
+
         const currentTarget = currentRoom.targets[world.targetIndex];
         if (currentTarget && distance(currentTarget, world.ball) < 34 + levelRef.current * 2 && Math.hypot(world.ball.vx, world.ball.vy) > 18) {
           world.targetIndex += 1;
@@ -644,8 +662,8 @@ export default function Game() {
           completeLevel();
         }
 
-        if (world.roomSeconds > currentRoom.chaserDelay) world.shadow.visible = true;
-        if (world.shadow.visible) {
+        if (!world.shadowDefeated && world.roomSeconds > currentRoom.chaserDelay) world.shadow.visible = true;
+        if (world.shadow.visible && !world.shadowDefeated) {
           const toPlayerX = world.player.x - world.shadow.x;
           const toPlayerY = world.player.y - world.shadow.y;
           const length = Math.hypot(toPlayerX, toPlayerY) || 1;
@@ -700,7 +718,7 @@ export default function Game() {
   const enterRoom = () => {
     resetRoom(levelRef.current);
     setScreen("playing");
-    showToast(ROOMS[levelRef.current].danger, 2800);
+    showToast("TIP · 공으로 그림자 심판을 맞히면 그 방에서 완전히 퇴장!", 3200);
   };
 
   const nextRoom = () => {

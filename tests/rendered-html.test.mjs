@@ -42,7 +42,7 @@ test("ships the complete five-room game loop and local character assets", async 
   for (const name of ["라민 야말", "엘링 홀란", "크리스티아누 호날두", "손흥민", "네이마르 주니오르"]) {
     assert.match(game, new RegExp(name));
   }
-  for (const mechanic of ["kickBall", "recallBall", "chaserSpeed", "targetProgress", "mobile-controls", "gameOver", "ending"]) {
+  for (const mechanic of ["kickBall", "recallBall", "chaserSpeed", "shadowDefeated", "그림자 심판이 이 방에서 퇴장", "targetProgress", "mobile-controls", "gameOver", "ending"]) {
     assert.match(game, new RegExp(mechanic));
   }
   assert.match(page, /import Game from "\.\/Game"/);
