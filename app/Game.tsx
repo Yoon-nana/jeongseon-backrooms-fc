@@ -7,6 +7,7 @@ type Screen = "title" | "briefing" | "playing" | "paused" | "levelClear" | "game
 type Point = { x: number; y: number };
 type Rect = Point & { w: number; h: number };
 type Target = Point & { label: string };
+type Difficulty = "입문" | "보통" | "어려움" | "악몽";
 type Room = {
   id: string;
   level: string;
@@ -32,6 +33,8 @@ type Room = {
   npc: Point;
   chaserSpeed: number;
   chaserDelay: number;
+  targetRadius: number;
+  difficulty: Difficulty;
 };
 
 type Particle = Point & { vx: number; vy: number; life: number; color: string };
@@ -77,7 +80,7 @@ const ROOMS: Room[] = [
       { x: 535, y: 120, w: 34, h: 315 }, { x: 785, y: 45, w: 34, h: 250 },
     ],
     start: { x: 82, y: 330 }, ballStart: { x: 132, y: 330 }, goal: { x: 946, y: 235, w: 26, h: 130 }, npc: { x: 872, y: 145 },
-    chaserSpeed: 67, chaserDelay: 9,
+    chaserSpeed: 46, chaserDelay: 15, targetRadius: 46, difficulty: "입문",
   },
   {
     id: "sabuk",
@@ -102,7 +105,7 @@ const ROOMS: Room[] = [
       { x: 605, y: 245, w: 32, h: 310 }, { x: 745, y: 165, w: 190, h: 30 },
     ],
     start: { x: 82, y: 480 }, ballStart: { x: 132, y: 480 }, goal: { x: 946, y: 235, w: 26, h: 130 }, npc: { x: 870, y: 142 },
-    chaserSpeed: 74, chaserDelay: 8,
+    chaserSpeed: 51, chaserDelay: 14, targetRadius: 45, difficulty: "입문",
   },
   {
     id: "var",
@@ -127,7 +130,7 @@ const ROOMS: Room[] = [
       { x: 690, y: 65, w: 34, h: 220 }, { x: 825, y: 335, w: 115, h: 30 },
     ],
     start: { x: 84, y: 130 }, ballStart: { x: 134, y: 130 }, goal: { x: 946, y: 235, w: 26, h: 130 }, npc: { x: 860, y: 135 },
-    chaserSpeed: 80, chaserDelay: 7.5,
+    chaserSpeed: 57, chaserDelay: 13, targetRadius: 43, difficulty: "보통",
   },
   {
     id: "auraji",
@@ -152,25 +155,25 @@ const ROOMS: Room[] = [
       { x: 555, y: 240, w: 30, h: 315 }, { x: 725, y: 255, w: 210, h: 30 },
     ],
     start: { x: 84, y: 470 }, ballStart: { x: 134, y: 470 }, goal: { x: 946, y: 235, w: 26, h: 130 }, npc: { x: 865, y: 135 },
-    chaserSpeed: 86, chaserDelay: 7,
+    chaserSpeed: 62, chaserDelay: 12, targetRadius: 41, difficulty: "보통",
   },
   {
     id: "mindungsan",
     level: "LEVEL 05",
     zone: "민둥산 페인트 미로",
-    title: "마지막 속임수",
+    title: "깊은 속임수",
     player: "네이마르 주니오르",
     playerCode: "NEYMAR · 10",
     image: "/assets/characters/neymar-jr.png",
     accent: "#56f38b",
     floor: "#0f1912",
     wall: "#2f4a38",
-    description: "잔디 냄새가 나는 복도 끝에서 가짜 출구들이 웃는다. 초록 잔상을 따라가며 진짜 마지막 휘슬을 찾아야 한다.",
-    objective: "페인트 표식 3개를 돌파하고 정선의 새벽 골대에 마지막 골인",
-    danger: "그림자 심판이 가장 빠릅니다. 공을 놓치면 즉시 R로 불러오세요.",
-    quote: "미로가 널 속이면, 한 번 더 속여 줘. 마지막 움직임은 즐기는 사람이 이겨.",
+    description: "잔디 냄새가 나는 복도 끝에서 가짜 출구들이 웃는다. 초록 잔상을 따라가며 더 깊은 백룸으로 통하는 휘슬을 찾아야 한다.",
+    objective: "페인트 표식 3개를 돌파하고 고원 통로 골대에 골인",
+    danger: "여기부터 길이 복잡해집니다. 공을 놓치면 즉시 R로 불러오세요.",
+    quote: "미로가 널 속이면, 한 번 더 속여 줘. 마지막 움직임까지 즐기는 사람이 이겨.",
     skill: "아리랑 페인트",
-    skillDetail: "다섯 개의 축구 기억이 합쳐져 정선으로 돌아가는 출구가 열립니다.",
+    skillDetail: "다섯 번째 축구 기억이 깨어나며 더 깊은 고원의 백룸으로 가는 문이 열립니다.",
     targets: [{ x: 235, y: 465, label: "N1" }, { x: 505, y: 125, label: "N2" }, { x: 765, y: 445, label: "N3" }],
     walls: [
       { x: 165, y: 75, w: 30, h: 300 }, { x: 335, y: 315, w: 250, h: 30 },
@@ -178,13 +181,140 @@ const ROOMS: Room[] = [
       { x: 845, y: 75, w: 95, h: 30 },
     ],
     start: { x: 82, y: 120 }, ballStart: { x: 132, y: 120 }, goal: { x: 946, y: 235, w: 26, h: 130 }, npc: { x: 855, y: 135 },
-    chaserSpeed: 94, chaserDelay: 6,
+    chaserSpeed: 68, chaserDelay: 11, targetRadius: 39, difficulty: "보통",
+  },
+  {
+    id: "high1",
+    level: "LEVEL 06",
+    zone: "하이원 설원 페널티 리프트",
+    title: "빙점 피니시",
+    player: "해리 케인",
+    playerCode: "KANE · 09",
+    image: "/assets/characters/harry-kane.png",
+    accent: "#ff914d",
+    floor: "#17181c",
+    wall: "#3b3f49",
+    description: "멈춘 리프트 아래 하얀 복도가 기울어진다. 페널티 지점마다 공을 멈춰 세워야 눈보라 속 다음 승강기가 나타난다.",
+    objective: "주황 페널티 마크 3개를 맞히고 리프트 골대에 골인",
+    danger: "난이도 어려움. 그림자 심판이 10초 뒤 나타나며 표식이 작아집니다.",
+    quote: "서두르지 마. 마지막 한 걸음에서 균형을 잡으면 가장 차가운 방도 뚫을 수 있어.",
+    skill: "설원 피니시",
+    skillDetail: "충전 슛의 마지막 순간을 안정시켜 좁은 표식도 침착하게 노릴 수 있습니다.",
+    targets: [{ x: 205, y: 125, label: "K1" }, { x: 485, y: 455, label: "K2" }, { x: 785, y: 145, label: "K3" }],
+    walls: [
+      { x: 255, y: 70, w: 30, h: 250 }, { x: 420, y: 355, w: 230, h: 30 },
+      { x: 605, y: 70, w: 30, h: 220 }, { x: 775, y: 250, w: 160, h: 30 },
+    ],
+    start: { x: 82, y: 470 }, ballStart: { x: 132, y: 470 }, goal: { x: 946, y: 235, w: 26, h: 130 }, npc: { x: 870, y: 140 },
+    chaserSpeed: 74, chaserDelay: 10, targetRadius: 37, difficulty: "어려움",
+  },
+  {
+    id: "hwanam",
+    level: "LEVEL 07",
+    zone: "화암동굴 세이브 벙커",
+    title: "마지막 선방",
+    player: "에밀리아노 마르티네스",
+    playerCode: "MARTÍNEZ · 23",
+    image: "/assets/characters/emiliano-martinez.png",
+    accent: "#42d9ff",
+    floor: "#10191c",
+    wall: "#2a444c",
+    description: "동굴 벽에 수백 개의 골문이 떠오르고 사라진다. 푸른 세이브 존에 공을 보내 가짜 골문을 하나씩 봉인해야 한다.",
+    objective: "세이브 존 3개를 공으로 봉인하고 광맥 골대에 골인",
+    danger: "난이도 어려움. 공을 멀리 보내면 추격 속도가 크게 올라갑니다.",
+    quote: "공포가 슛 방향을 알려 줄 때가 있어. 끝까지 보고, 네 골문을 지켜.",
+    skill: "골라인 본능",
+    skillDetail: "공과 그림자 심판의 위치를 빠르게 읽어 위기에서 탈출할 여유가 생깁니다.",
+    targets: [{ x: 185, y: 145, label: "G1" }, { x: 500, y: 465, label: "G2" }, { x: 775, y: 135, label: "G3" }],
+    walls: [
+      { x: 250, y: 240, w: 210, h: 30 }, { x: 430, y: 55, w: 30, h: 135 },
+      { x: 590, y: 245, w: 30, h: 310 }, { x: 740, y: 200, w: 195, h: 30 },
+    ],
+    start: { x: 82, y: 470 }, ballStart: { x: 132, y: 470 }, goal: { x: 946, y: 235, w: 26, h: 130 }, npc: { x: 865, y: 135 },
+    chaserSpeed: 79, chaserDelay: 9, targetRadius: 35, difficulty: "어려움",
+  },
+  {
+    id: "arirang",
+    level: "LEVEL 08",
+    zone: "아리랑 곡선 복도",
+    title: "왼발의 궤적",
+    player: "리오넬 메시",
+    playerCode: "MESSI · 10",
+    image: "/assets/characters/lionel-messi.png",
+    accent: "#64a6ff",
+    floor: "#111621",
+    wall: "#313d55",
+    description: "아리랑 선율이 휘어진 터널을 따라 되감긴다. 직선 슛은 사라지고, 짧은 드리블로 곡선의 중심을 찾아야 한다.",
+    objective: "푸른 궤적 표식 3개를 잇고 메아리 골대에 골인",
+    danger: "난이도 어려움. 추격자가 8초 뒤 등장하므로 초반 동선을 짧게 잡으세요.",
+    quote: "큰 공간은 필요 없어. 공과 한 걸음만 있으면 길은 네 쪽으로 휘어져.",
+    skill: "아리랑 드리블",
+    skillDetail: "좁은 틈에서 공을 가까이 두고 방향을 바꾸는 감각이 완성됩니다.",
+    targets: [{ x: 225, y: 445, label: "M1" }, { x: 470, y: 125, label: "M2" }, { x: 785, y: 445, label: "M3" }],
+    walls: [
+      { x: 170, y: 70, w: 30, h: 310 }, { x: 360, y: 325, w: 250, h: 30 },
+      { x: 560, y: 55, w: 30, h: 210 }, { x: 720, y: 255, w: 30, h: 300 },
+    ],
+    start: { x: 82, y: 120 }, ballStart: { x: 132, y: 120 }, goal: { x: 946, y: 235, w: 26, h: 130 }, npc: { x: 860, y: 135 },
+    chaserSpeed: 84, chaserDelay: 8, targetRadius: 33, difficulty: "어려움",
+  },
+  {
+    id: "eoksae",
+    level: "LEVEL 09",
+    zone: "민둥산 억새 윙",
+    title: "속도의 잔상",
+    player: "비니시우스 주니오르",
+    playerCode: "VINI JR · 07",
+    image: "/assets/characters/vinicius-junior.png",
+    accent: "#ff4fd8",
+    floor: "#19111a",
+    wall: "#4b3047",
+    description: "검은 억새가 터치라인처럼 솟아 길을 잘라 낸다. 분홍 잔상이 사라지기 전에 반대편 윙으로 공을 전환해야 한다.",
+    objective: "윙 표식 3개를 빠르게 전환하고 억새 골대에 골인",
+    danger: "난이도 악몽. 표식이 작고 추격자가 7초 만에 나타납니다.",
+    quote: "막힌 쪽만 보지 마. 한 번 웃고 방향을 바꾸면 수비도 미로도 늦어져.",
+    skill: "고원 스프린트",
+    skillDetail: "마지막 방에서 질주와 방향 전환을 이어 갈 수 있는 속도의 기억이 깨어납니다.",
+    targets: [{ x: 205, y: 120, label: "V1" }, { x: 505, y: 470, label: "V2" }, { x: 800, y: 125, label: "V3" }],
+    walls: [
+      { x: 260, y: 65, w: 30, h: 305 }, { x: 430, y: 315, w: 270, h: 30 },
+      { x: 650, y: 65, w: 30, h: 195 }, { x: 815, y: 250, w: 125, h: 30 },
+    ],
+    start: { x: 82, y: 470 }, ballStart: { x: 132, y: 470 }, goal: { x: 946, y: 235, w: 26, h: 130 }, npc: { x: 865, y: 135 },
+    chaserSpeed: 90, chaserDelay: 7, targetRadius: 31, difficulty: "악몽",
+  },
+  {
+    id: "stadium",
+    level: "LEVEL 10",
+    zone: "정선 종합운동장 90+5",
+    title: "마지막 추가시간",
+    player: "주드 벨링엄",
+    playerCode: "BELLINGHAM · 05",
+    image: "/assets/characters/jude-bellingham.png",
+    accent: "#e7c35a",
+    floor: "#15140f",
+    wall: "#484131",
+    description: "관중 없는 운동장 전광판이 90+5에서 멈췄다. 아홉 개의 기억을 연결해 마지막 세 번의 패스를 완성해야 새벽이 시작된다.",
+    objective: "추가시간 표식 3개를 깨우고 정선의 새벽 골대에 마지막 골인",
+    danger: "난이도 악몽. 가장 작은 표식과 가장 빠른 심판이 기다립니다. 강한 슛으로 먼저 퇴장시키세요.",
+    quote: "끝났다고 느낀 순간이 우리 시간의 시작이야. 고개를 들고 마지막 패스를 줘.",
+    skill: "추가시간의 심장",
+    skillDetail: "열 개의 축구 기억이 하나로 이어져 정선의 새벽으로 돌아가는 출구가 열립니다.",
+    targets: [{ x: 215, y: 450, label: "J1" }, { x: 500, y: 120, label: "J2" }, { x: 785, y: 430, label: "J3" }],
+    walls: [
+      { x: 165, y: 65, w: 30, h: 300 }, { x: 335, y: 315, w: 250, h: 30 },
+      { x: 535, y: 65, w: 30, h: 190 }, { x: 705, y: 210, w: 30, h: 345 },
+      { x: 845, y: 75, w: 95, h: 30 },
+    ],
+    start: { x: 82, y: 120 }, ballStart: { x: 132, y: 120 }, goal: { x: 946, y: 235, w: 26, h: 130 }, npc: { x: 855, y: 135 },
+    chaserSpeed: 96, chaserDelay: 6, targetRadius: 29, difficulty: "악몽",
   },
 ];
 
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 const nowMs = () => (typeof performance === "undefined" ? 0 : performance.now());
 const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y);
+const levelNumber = (index: number) => String(index + 1).padStart(2, "0");
 
 function makeWorld(room: Room): WorldState {
   return {
@@ -537,8 +667,9 @@ export default function Game() {
         ctx.globalAlpha = done ? 0.22 : active ? (0.75 + Math.sin(time * 0.006) * 0.22) : 0.18;
         ctx.strokeStyle = currentRoom.accent; ctx.lineWidth = active ? 5 : 2;
         ctx.shadowColor = currentRoom.accent; ctx.shadowBlur = active ? 25 : 6;
-        ctx.beginPath(); ctx.arc(target.x, target.y, 28 + Math.sin(time * 0.005 + index) * 3, 0, Math.PI * 2); ctx.stroke();
-        ctx.beginPath(); ctx.arc(target.x, target.y, 15, 0, Math.PI * 2); ctx.stroke();
+        const ringRadius = Math.max(20, currentRoom.targetRadius - 8);
+        ctx.beginPath(); ctx.arc(target.x, target.y, ringRadius + Math.sin(time * 0.005 + index) * 3, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(target.x, target.y, ringRadius * 0.54, 0, Math.PI * 2); ctx.stroke();
         ctx.shadowBlur = 0; ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = "900 10px ui-monospace, monospace"; ctx.fillText(done ? "✓" : target.label, target.x, target.y);
         ctx.restore();
       });
@@ -648,7 +779,7 @@ export default function Game() {
         }
 
         const currentTarget = currentRoom.targets[world.targetIndex];
-        if (currentTarget && distance(currentTarget, world.ball) < 34 + levelRef.current * 2 && Math.hypot(world.ball.vx, world.ball.vy) > 18) {
+        if (currentTarget && distance(currentTarget, world.ball) < currentRoom.targetRadius && Math.hypot(world.ball.vx, world.ball.vy) > 18) {
           world.targetIndex += 1;
           setTargetProgress(world.targetIndex);
           spawnBurst(currentTarget.x, currentTarget.y, currentRoom.accent);
@@ -773,7 +904,7 @@ export default function Game() {
           <div className="title-copy">
             <p className="title-kicker"><span>CASE JFC-090</span> 마지막 열차 이후</p>
             <h1><span>정선 FC</span><strong>90분의 백룸</strong></h1>
-            <p className="title-lede">축구공을 놓치지 마세요.<br />다섯 개의 기억이 당신의 출구입니다.</p>
+            <p className="title-lede">축구공을 놓치지 마세요.<br />열 개의 기억이 당신의 출구입니다.</p>
             <div className="title-actions">
               <button className="primary-button" type="button" onClick={startNewGame}><span>▶</span> 게임 시작</button>
               <span className="enter-hint">ENTER로도 시작</span>
@@ -790,13 +921,13 @@ export default function Game() {
           </div>
         </section>
         <section className="lineup" aria-label="등장 선수">
-          <div className="lineup-heading"><span>MEMORY XI</span><b>출구를 기억하는 5인</b></div>
+          <div className="lineup-heading"><span>MEMORY XI</span><b>출구를 기억하는 10인</b></div>
           <div className="lineup-list">
             {ROOMS.map((item, index) => (
               <article className="lineup-player" key={item.id} style={{ "--accent": item.accent } as CSSProperties}>
-                <span className="lineup-index">0{index + 1}</span>
+                <span className="lineup-index">{levelNumber(index)}</span>
                 <img src={item.image} alt="" />
-                <div><b>{item.player}</b><small>{item.skill}</small></div>
+                <div><b>{item.player}</b><small>{item.skill}</small><em>{item.difficulty}</em></div>
               </article>
             ))}
           </div>
@@ -810,7 +941,7 @@ export default function Game() {
     <main className="game-screen" style={{ "--room-accent": room.accent } as CSSProperties}>
       <div className="game-noise" aria-hidden="true" />
       <header className="game-hud">
-        <div className="hud-location"><span>{room.level}</span><b>{room.zone}</b><small>{room.title}</small></div>
+        <div className="hud-location"><span>{room.level} · 난이도 {room.difficulty}</span><b>{room.zone}</b><small>{room.title}</small></div>
         <div className="hud-center">
           <div className="objective-label"><span>MISSION</span><b>{room.objective}</b></div>
           <div className="target-dots" aria-label={`표식 ${targetProgress}/3`}>
@@ -858,11 +989,11 @@ export default function Game() {
           <section className="player-dialogue">
             <div className="dialogue-art"><span>{room.playerCode}</span><img src={room.image} alt={`${room.player} 캐릭터`} /></div>
             <div className="dialogue-copy">
-              <p className="modal-kicker">MEMORY SIGNAL FOUND · {room.level}</p>
+              <p className="modal-kicker">MEMORY SIGNAL FOUND · {room.level} · 난이도 {room.difficulty}</p>
               <h2 id="briefing-title">{room.title}<small>{room.zone}</small></h2>
               <p className="room-story">{room.description}</p>
               <blockquote>“{room.quote}”<cite>{room.player}</cite></blockquote>
-              <div className="mission-box"><span>이번 미션</span><b>{room.objective}</b><small>⚠ {room.danger}</small></div>
+              <div className="mission-box"><span>이번 미션 · 난이도 {room.difficulty}</span><b>{room.objective}</b><small>⚠ {room.danger}</small></div>
               <button className="primary-button compact" type="button" onClick={enterRoom}><span>▶</span> 도전 시작</button>
             </div>
           </section>
@@ -878,7 +1009,7 @@ export default function Game() {
       {screen === "levelClear" && (
         <div className="modal-layer clear-layer" role="dialog" aria-modal="true" aria-labelledby="clear-title">
           <section className="clear-card">
-            <div className="clear-number">0{level + 1}</div>
+            <div className="clear-number">{levelNumber(level)}</div>
             <img src={room.image} alt="" />
             <div className="clear-copy"><p className="modal-kicker">MEMORY RESTORED</p><h2 id="clear-title">{room.skill}<small>기술 해금</small></h2><p>{room.skillDetail}</p><div className="clear-stats"><span>ROOM TIME<b>{formatTime(elapsed)}</b></span><span>SIGNALS<b>3 / 3</b></span><span>WARNINGS<b>{hearts} / 3</b></span></div><button className="primary-button compact" type="button" onClick={nextRoom}>{level === ROOMS.length - 1 ? "마지막 출구 열기" : "다음 백룸으로"}<span>→</span></button></div>
           </section>
@@ -898,8 +1029,8 @@ export default function Game() {
             <div className="ending-lineup">{ROOMS.map((item) => <img key={item.id} src={item.image} alt="" />)}</div>
             <p className="modal-kicker">ESCAPE COMPLETE · JEONGSEON 05:42</p>
             <h2 id="ending-title">새벽의 정선으로<br /><strong>돌아왔습니다.</strong></h2>
-            <p>다섯 개의 축구 기억이 마지막 휘슬을 울렸습니다.<br />소년의 가방에는 이제 출구가 아니라, 다시 돌아올 길이 남았습니다.</p>
-            <div className="ending-score"><span>ESCAPE TIME</span><b>{formatTime(totalSeconds)}</b><small>{totalSeconds < 180 ? "RANK S · 아리랑 플레이메이커" : totalSeconds < 300 ? "RANK A · 정선의 스트라이커" : "RANK B · 끝까지 뛴 생존자"}</small></div>
+            <p>열 개의 축구 기억이 마지막 휘슬을 울렸습니다.<br />소년의 가방에는 이제 출구가 아니라, 다시 돌아올 길이 남았습니다.</p>
+            <div className="ending-score"><span>ESCAPE TIME</span><b>{formatTime(totalSeconds)}</b><small>{totalSeconds < ROOMS.length * 48 ? "RANK S · 아리랑 플레이메이커" : totalSeconds < ROOMS.length * 78 ? "RANK A · 정선의 스트라이커" : "RANK B · 끝까지 뛴 생존자"}</small></div>
             <button className="primary-button compact" type="button" onClick={startNewGame}>다시 플레이</button>
             <button className="text-button" type="button" onClick={returnTitle}>타이틀로 돌아가기</button>
           </section>

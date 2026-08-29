@@ -31,7 +31,7 @@ test("server-renders the Korean football backrooms game", async () => {
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|SkeletonPreview/i);
 });
 
-test("ships the complete five-room game loop and local character assets", async () => {
+test("ships the complete ten-room difficulty curve and local character assets", async () => {
   const [game, page, layout, packageJson] = await Promise.all([
     readFile(new URL("../app/Game.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
@@ -39,10 +39,13 @@ test("ships the complete five-room game loop and local character assets", async 
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
-  for (const name of ["라민 야말", "엘링 홀란", "크리스티아누 호날두", "손흥민", "네이마르 주니오르"]) {
+  for (const name of [
+    "라민 야말", "엘링 홀란", "크리스티아누 호날두", "손흥민", "네이마르 주니오르",
+    "해리 케인", "에밀리아노 마르티네스", "리오넬 메시", "비니시우스 주니오르", "주드 벨링엄",
+  ]) {
     assert.match(game, new RegExp(name));
   }
-  for (const mechanic of ["kickBall", "recallBall", "chaserSpeed", "shadowDefeated", "그림자 심판이 이 방에서 퇴장", "targetProgress", "mobile-controls", "gameOver", "ending"]) {
+  for (const mechanic of ["kickBall", "recallBall", "chaserSpeed", "chaserDelay", "targetRadius", "difficulty", "shadowDefeated", "그림자 심판이 이 방에서 퇴장", "targetProgress", "mobile-controls", "gameOver", "ending"]) {
     assert.match(game, new RegExp(mechanic));
   }
   assert.match(page, /import Game from "\.\/Game"/);
@@ -51,12 +54,20 @@ test("ships the complete five-room game loop and local character assets", async 
 
   const assets = [
     "hero.png", "hero-game.png", "lamine-yamal.png", "erling-haaland.png",
-    "cristiano-ronaldo.png", "son-heung-min.png", "neymar-jr.png",
+    "cristiano-ronaldo.png", "son-heung-min.png", "neymar-jr.png", "harry-kane.png",
+    "emiliano-martinez.png", "lionel-messi.png", "vinicius-junior.png", "jude-bellingham.png",
   ];
+  const newTransparentAssets = new Set([
+    "harry-kane.png", "emiliano-martinez.png", "lionel-messi.png", "vinicius-junior.png", "jude-bellingham.png",
+  ]);
   for (const filename of assets) {
     const file = new URL(`../public/assets/characters/${filename}`, import.meta.url);
     await access(file);
     assert.ok((await stat(file)).size > 100_000, `${filename} should be a real image asset`);
+    if (newTransparentAssets.has(filename)) {
+      const png = await readFile(file);
+      assert.equal(png[25], 6, `${filename} should use RGBA transparency`);
+    }
   }
   await assert.rejects(access(new URL("../app/_sites-preview/SkeletonPreview.tsx", import.meta.url)));
   await assert.rejects(access(new URL("../app/_sites-preview/preview.css", import.meta.url)));
