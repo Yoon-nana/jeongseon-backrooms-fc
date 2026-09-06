@@ -10,7 +10,9 @@ import tseslint from "typescript-eslint";
 const eslintConfig = defineConfig([
   globalIgnores([
     ".next/**",
+    ".vite-pages/**",
     "dist/**",
+    "gh-pages-dist/**",
     "out/**",
     "build/**",
     "next-env.d.ts",

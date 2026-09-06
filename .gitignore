@@ -35,6 +35,8 @@ yarn-error.log*
 .vercel
 
 /dist/
+/gh-pages-dist/
+/.vite-pages/
 /.wrangler/
 /outputs/
 /work/

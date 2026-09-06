@@ -2,6 +2,10 @@
 
 정선의 실제 관광지 사진이 끝없는 축구 백룸으로 변한 공포 탈출 웹 게임입니다. 첨부된 소년 캐릭터가 축구공을 지키며 14명 선수의 기억을 깨우고 가리왕산의 마지막 출구를 찾습니다.
 
+## 공개 게임
+
+<https://yoon-nana.github.io/jeongseon-backrooms-fc/>
+
 ## 바로 플레이하기
 
 Windows PowerShell에서 다음 명령을 실행합니다.

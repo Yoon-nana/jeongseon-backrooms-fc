@@ -50,7 +50,7 @@ test("ships the complete fourteen-room difficulty curve, official backgrounds, a
     assert.match(game, new RegExp(mechanic));
   }
   assert.match(game, /level: "LEVEL 14"/);
-  assert.equal((game.match(/background: "\/assets\/backgrounds\//g) ?? []).length, 14);
+  assert.equal((game.match(/background: assetPath\("\/assets\/backgrounds\//g) ?? []).length, 14);
   assert.equal((game.match(/photoSource: "https:\/\/www\.jeongseon\.go\.kr/g) ?? []).length, 14);
   assert.match(game, /maxShadows: 0/);
   assert.match(game, /maxShadows: 3/);

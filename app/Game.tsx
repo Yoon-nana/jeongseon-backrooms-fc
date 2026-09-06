@@ -63,6 +63,8 @@ type WorldState = {
 
 const WORLD_W = 1000;
 const WORLD_H = 600;
+const assetPath = (path: string) =>
+  `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
 
 const ROOMS: Room[] = [
   {
@@ -72,8 +74,8 @@ const ROOMS: Room[] = [
     title: "신호 드리블",
     player: "라민 야말",
     playerCode: "YAMAL · 27",
-    image: "/assets/characters/lamine-yamal.png",
-    background: "/assets/backgrounds/room-01-najeon.jpg",
+    image: assetPath("/assets/characters/lamine-yamal.png"),
+    background: assetPath("/assets/backgrounds/room-01-najeon.jpg"),
     photoCredit: "나전역카페",
     photoSource: "https://www.jeongseon.go.kr/tour/travelinformation/photo_travel?articleSeq=244692",
     accent: "#b55cff",
@@ -100,8 +102,8 @@ const ROOMS: Room[] = [
     title: "압력 해제",
     player: "엘링 홀란",
     playerCode: "HAALAND · 09",
-    image: "/assets/characters/erling-haaland.png",
-    background: "/assets/backgrounds/room-02-sabuk-coal.jpg",
+    image: assetPath("/assets/characters/erling-haaland.png"),
+    background: assetPath("/assets/backgrounds/room-02-sabuk-coal.jpg"),
     photoCredit: "사북석탄유물보존관",
     photoSource: "https://www.jeongseon.go.kr/tour/jeongseontour/attractions?contentSeq=161129&mode=read",
     accent: "#58e7ff",
@@ -128,8 +130,8 @@ const ROOMS: Room[] = [
     title: "멈춘 프리킥",
     player: "크리스티아누 호날두",
     playerCode: "RONALDO · 07",
-    image: "/assets/characters/cristiano-ronaldo.png",
-    background: "/assets/backgrounds/room-03-arirang-train.jpg",
+    image: assetPath("/assets/characters/cristiano-ronaldo.png"),
+    background: assetPath("/assets/backgrounds/room-03-arirang-train.jpg"),
     photoCredit: "정선아리랑열차",
     photoSource: "https://www.jeongseon.go.kr/tour/jeongseontour/attractions?contentSeq=161700&mode=read",
     accent: "#ff4a53",
@@ -156,8 +158,8 @@ const ROOMS: Room[] = [
     title: "두 갈래의 답",
     player: "손흥민",
     playerCode: "SON · 07",
-    image: "/assets/characters/son-heung-min.png",
-    background: "/assets/backgrounds/room-04-auraji.jpg",
+    image: assetPath("/assets/characters/son-heung-min.png"),
+    background: assetPath("/assets/backgrounds/room-04-auraji.jpg"),
     photoCredit: "아우라지",
     photoSource: "https://www.jeongseon.go.kr/tour/jeongseontour/attractions?contentSeq=289&mode=read",
     accent: "#ffd858",
@@ -184,8 +186,8 @@ const ROOMS: Room[] = [
     title: "깊은 속임수",
     player: "네이마르 주니오르",
     playerCode: "NEYMAR · 10",
-    image: "/assets/characters/neymar-jr.png",
-    background: "/assets/backgrounds/room-05-cheonnyeon-forest.jpg",
+    image: assetPath("/assets/characters/neymar-jr.png"),
+    background: assetPath("/assets/backgrounds/room-05-cheonnyeon-forest.jpg"),
     photoCredit: "여량면 천년의숲",
     photoSource: "https://www.jeongseon.go.kr/tour/travelinformation/photo_travel?articleSeq=291398",
     accent: "#56f38b",
@@ -213,8 +215,8 @@ const ROOMS: Room[] = [
     title: "빙점 피니시",
     player: "해리 케인",
     playerCode: "KANE · 09",
-    image: "/assets/characters/harry-kane.png",
-    background: "/assets/backgrounds/room-06-sabuk-snow.jpg",
+    image: assetPath("/assets/characters/harry-kane.png"),
+    background: assetPath("/assets/backgrounds/room-06-sabuk-snow.jpg"),
     photoCredit: "눈 쌓인 사북읍",
     photoSource: "https://www.jeongseon.go.kr/tour/travelinformation/photo_travel?articleSeq=269371",
     accent: "#ff914d",
@@ -241,8 +243,8 @@ const ROOMS: Room[] = [
     title: "마지막 선방",
     player: "에밀리아노 마르티네스",
     playerCode: "MARTÍNEZ · 23",
-    image: "/assets/characters/emiliano-martinez.png",
-    background: "/assets/backgrounds/room-07-hwaam-cave.jpg",
+    image: assetPath("/assets/characters/emiliano-martinez.png"),
+    background: assetPath("/assets/backgrounds/room-07-hwaam-cave.jpg"),
     photoCredit: "화암동굴",
     photoSource: "https://www.jeongseon.go.kr/tour/jeongseontour/attractions?contentSeq=290&mode=read",
     accent: "#42d9ff",
@@ -269,8 +271,8 @@ const ROOMS: Room[] = [
     title: "왼발의 궤적",
     player: "리오넬 메시",
     playerCode: "MESSI · 10",
-    image: "/assets/characters/lionel-messi.png",
-    background: "/assets/backgrounds/room-08-arirang-museum.jpg",
+    image: assetPath("/assets/characters/lionel-messi.png"),
+    background: assetPath("/assets/backgrounds/room-08-arirang-museum.jpg"),
     photoCredit: "아리랑박물관",
     photoSource: "https://www.jeongseon.go.kr/tour/jeongseontour/attractions?contentSeq=165197&mode=read",
     accent: "#64a6ff",
@@ -297,8 +299,8 @@ const ROOMS: Room[] = [
     title: "속도의 잔상",
     player: "비니시우스 주니오르",
     playerCode: "VINI JR · 07",
-    image: "/assets/characters/vinicius-junior.png",
-    background: "/assets/backgrounds/room-09-mindungsan.jpg",
+    image: assetPath("/assets/characters/vinicius-junior.png"),
+    background: assetPath("/assets/backgrounds/room-09-mindungsan.jpg"),
     photoCredit: "민둥산등산로",
     photoSource: "https://www.jeongseon.go.kr/tour/jeongseontour/attractions?contentSeq=163361&mode=read",
     accent: "#ff4fd8",
@@ -325,8 +327,8 @@ const ROOMS: Room[] = [
     title: "이어지는 추가시간",
     player: "주드 벨링엄",
     playerCode: "BELLINGHAM · 05",
-    image: "/assets/characters/jude-bellingham.png",
-    background: "/assets/backgrounds/room-10-ararichon.jpg",
+    image: assetPath("/assets/characters/jude-bellingham.png"),
+    background: assetPath("/assets/backgrounds/room-10-ararichon.jpg"),
     photoCredit: "아라리촌",
     photoSource: "https://www.jeongseon.go.kr/tour/travelinformation/photo_travel?articleSeq=213735",
     accent: "#e7c35a",
@@ -354,8 +356,8 @@ const ROOMS: Room[] = [
     title: "절벽 끝 가속",
     player: "킬리안 음바페",
     playerCode: "MBAPPÉ · 10",
-    image: "/assets/characters/kylian-mbappe.png",
-    background: "/assets/backgrounds/room-11-skywalk.jpg",
+    image: assetPath("/assets/characters/kylian-mbappe.png"),
+    background: assetPath("/assets/backgrounds/room-11-skywalk.jpg"),
     photoCredit: "아리힐스-스카이워크",
     photoSource: "https://www.jeongseon.go.kr/tour/jeongseontour/attractions?contentSeq=314&mode=read",
     accent: "#4b8dff",
@@ -382,8 +384,8 @@ const ROOMS: Room[] = [
     title: "세 겹의 수비선",
     player: "알리송 베케르",
     playerCode: "ALISSON · 01",
-    image: "/assets/characters/alisson-becker.png",
-    background: "/assets/backgrounds/room-12-donggang.jpg",
+    image: assetPath("/assets/characters/alisson-becker.png"),
+    background: assetPath("/assets/backgrounds/room-12-donggang.jpg"),
     photoCredit: "나리소 전망대",
     photoSource: "https://www.jeongseon.go.kr/tour/jeongseontour/attractions?contentSeq=166989&mode=read",
     accent: "#d8ff47",
@@ -410,8 +412,8 @@ const ROOMS: Room[] = [
     title: "다섯 번의 컷인",
     player: "부카요 사카",
     playerCode: "SAKA · 07",
-    image: "/assets/characters/bukayo-saka.png",
-    background: "/assets/backgrounds/room-13-arirang-market.jpg",
+    image: assetPath("/assets/characters/bukayo-saka.png"),
+    background: assetPath("/assets/backgrounds/room-13-arirang-market.jpg"),
     photoCredit: "정선5일장-정선아리랑시장",
     photoSource: "https://www.jeongseon.go.kr/tour/jeongseontour/attractions?contentSeq=254764&mode=read",
     accent: "#ff5c39",
@@ -439,8 +441,8 @@ const ROOMS: Room[] = [
     title: "마지막 호나우두",
     player: "호나우두 나자리우",
     playerCode: "RONALDO · 09",
-    image: "/assets/characters/ronaldo-nazario.png",
-    background: "/assets/backgrounds/room-14-gariwang.jpg",
+    image: assetPath("/assets/characters/ronaldo-nazario.png"),
+    background: assetPath("/assets/backgrounds/room-14-gariwang.jpg"),
     photoCredit: "정선 가리왕산 케이블카",
     photoSource: "https://www.jeongseon.go.kr/tour/jeongseontour/attractions?contentSeq=254812&mode=read",
     accent: "#ffd429",
@@ -679,7 +681,7 @@ export default function Game() {
 
   useEffect(() => {
     const hero = new Image();
-    hero.src = "/assets/characters/hero-game.png";
+    hero.src = assetPath("/assets/characters/hero-game.png");
     heroImageRef.current = hero;
     for (const item of ROOMS) {
       const image = new Image();
@@ -1110,7 +1112,7 @@ export default function Game() {
           </div>
           <div className="hero-stage">
             <div className="hero-halo" aria-hidden="true" />
-            <img className="hero-character" src="/assets/characters/hero.png" alt="파란 줄무늬 유니폼과 탐험 가방을 착용한 주인공 소년" />
+            <img className="hero-character" src={assetPath("/assets/characters/hero.png")} alt="파란 줄무늬 유니폼과 탐험 가방을 착용한 주인공 소년" />
             <div className="live-chip"><i /> EXIT SIGNAL <b>0%</b></div>
             <div className="match-card"><span>00:00</span><b>JSE 0 — ? BKR</b><small>정선선 지하 4층</small></div>
           </div>
